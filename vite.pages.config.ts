@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  base: "/shoe-template-website/",
+  base: "/",
   plugins: [react(), tailwindcss(), tsconfigPaths()],
   build: {
     outDir: "dist-pages",
