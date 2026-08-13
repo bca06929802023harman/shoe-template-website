@@ -5,6 +5,7 @@ import shoe1 from "@/assets/shoe-1.png";
 import shoe2 from "@/assets/shoe-2.png";
 import shoe3 from "@/assets/shoe-3.png";
 import shoe4 from "@/assets/shoe-4.png";
+import { TOONHUB_THEMES, useToonHubTheme } from "@/components/ToonHubTheme";
 
 const IMAGES = [
   { src: shoe1, alt: "White leather low-top sneaker with orange heel", bg: "#F4845F", panel: "#F79B7F" },
@@ -29,6 +30,7 @@ export default function ToonHubHero() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { setTheme } = useToonHubTheme();
 
   useEffect(() => {
     IMAGES.forEach((item) => {
@@ -48,10 +50,12 @@ export default function ToonHubHero() {
     (dir: "next" | "prev") => {
       if (isAnimating) return;
       setIsAnimating(true);
-      setActiveIndex((prev) => (dir === "next" ? (prev + 1) % 4 : (prev + 3) % 4));
+      const nextIndex = dir === "next" ? (activeIndex + 1) % 4 : (activeIndex + 3) % 4;
+      setActiveIndex(nextIndex);
+      setTheme(TOONHUB_THEMES[nextIndex]!);
       window.setTimeout(() => setIsAnimating(false), DURATION);
     },
-    [isAnimating],
+    [activeIndex, isAnimating, setTheme],
   );
 
   const roleFor = (index: number): Role => {
