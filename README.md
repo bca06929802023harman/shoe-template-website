@@ -27,3 +27,15 @@ npm run dev
 - TypeScript
 - React
 - Tailwind CSS
+
+## Razorpay ₹1 Test Service
+
+The storefront includes a small **Razorpay test service** card below the bag summary. It creates a fixed ₹1 order (100 paise), opens Razorpay Standard Checkout, and verifies the returned payment signature and payment amount on the server.
+
+Copy `.env.example` to `.env` for local development and add Razorpay **Test Mode** credentials from the Dashboard:
+
+```sh
+cp .env.example .env
+```
+
+Set `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` as server environment variables in the deployed environment. Do not put the secret in client-side variables or commit a real `.env` file. Use Razorpay Test Mode to avoid charging real money while checking the flow.

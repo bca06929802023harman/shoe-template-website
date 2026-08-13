@@ -87,6 +87,59 @@ const SNEAKERS: Sneaker[] = [
 ];
 
 const money = (amount: number) => `$${amount}`;
+const rupees = (amount: number) => `₹${amount}`;
+
+type RazorpayPaymentResponse = {
+  razorpay_payment_id: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
+};
+
+type RazorpayOrder = {
+  keyId: string;
+  orderId: string;
+  amount: number;
+  currency: string;
+};
+
+type RazorpayCheckoutOptions = {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  theme: { color: string };
+  handler: (response: RazorpayPaymentResponse) => void;
+  modal?: { ondismiss?: () => void };
+};
+
+type RazorpayCheckout = { open: () => void };
+type RazorpayConstructor = new (options: RazorpayCheckoutOptions) => RazorpayCheckout;
+
+declare global {
+  interface Window {
+    Razorpay?: RazorpayConstructor;
+  }
+}
+
+let razorpayScriptPromise: Promise<void> | undefined;
+
+function loadRazorpayScript() {
+  if (window.Razorpay) return Promise.resolve();
+  if (razorpayScriptPromise) return razorpayScriptPromise;
+
+  razorpayScriptPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Razorpay checkout could not be loaded."));
+    document.body.appendChild(script);
+  });
+
+  return razorpayScriptPromise;
+}
 
 export default function ToonHubWebsite() {
   const { theme } = useToonHubTheme();
@@ -166,6 +219,8 @@ export default function ToonHubWebsite() {
           <div className="flex items-center gap-4"><span className="flex h-12 w-12 items-center justify-center rounded-full" style={{ backgroundColor: theme.background }}><ShoppingBag className="h-5 w-5" /></span><div><p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50">Your bag</p><p className="mt-1 text-sm font-bold">{bag.length ? `${bag.length} ${bag.length === 1 ? "pair" : "pairs"} · ${money(bagTotal)}` : "Your bag is ready when you are."}</p></div></div>
           <button type="button" onClick={() => setCartOpen(true)} className="inline-flex items-center justify-center gap-3 rounded-full bg-white px-5 py-3.5 text-[10px] font-black uppercase tracking-[0.15em] text-[#172134] transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.97]">View bag <ArrowRight className="h-4 w-4" /></button>
         </div>
+
+        <RazorpayTestService accent={theme.background} />
         </section>
       </ToonHubParallax>
 
@@ -225,6 +280,86 @@ export default function ToonHubWebsite() {
 
       <style>{`@keyframes toonhubTicker { from { transform: translateX(0); } to { transform: translateX(-35%); } } .toonhub-marquee { animation: toonhubTicker 22s linear infinite; } @media (prefers-reduced-motion: reduce) { .toonhub-marquee { animation: none; } }`}</style>
     </div>
+  );
+}
+
+function RazorpayTestService({ accent }: { accent: string }) {
+  const [status, setStatus] = useState<"idle" | "loading" | "verifying" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
+
+  const startPayment = async () => {
+    if (status === "loading" || status === "verifying") return;
+
+    setStatus("loading");
+    setMessage("");
+
+    try {
+      await loadRazorpayScript();
+      const orderResponse = await fetch("/api/razorpay/order", { method: "POST" });
+      const orderPayload = (await orderResponse.json()) as RazorpayOrder | { error?: string };
+
+      if (!orderResponse.ok || !("orderId" in orderPayload)) {
+        throw new Error("error" in orderPayload ? orderPayload.error : "Could not create the ₹1 test order.");
+      }
+
+      if (!window.Razorpay) throw new Error("Razorpay checkout is unavailable.");
+
+      const checkout = new window.Razorpay({
+        key: orderPayload.keyId,
+        amount: orderPayload.amount,
+        currency: orderPayload.currency,
+        name: "TOONHUB Casuals",
+        description: "Razorpay test service",
+        order_id: orderPayload.orderId,
+        theme: { color: accent },
+        handler: async (payment) => {
+          setStatus("verifying");
+
+          try {
+            const verificationResponse = await fetch("/api/razorpay/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ...payment, orderId: orderPayload.orderId }),
+            });
+            const verificationPayload = (await verificationResponse.json()) as { error?: string; verified?: boolean };
+
+            if (!verificationResponse.ok || !verificationPayload.verified) {
+              throw new Error(verificationPayload.error ?? "Payment verification failed.");
+            }
+
+            setStatus("success");
+            setMessage("The ₹1 payment was verified successfully.");
+          } catch (error) {
+            setStatus("error");
+            setMessage(error instanceof Error ? error.message : "Payment verification failed.");
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            setStatus((current) => current === "loading" ? "idle" : current);
+          },
+        },
+      });
+
+      checkout.open();
+    } catch (error) {
+      setStatus("error");
+      setMessage(error instanceof Error ? error.message : "The Razorpay test could not be completed.");
+    }
+  };
+
+  const buttonLabel = status === "loading" ? "Preparing checkout" : status === "verifying" ? "Verifying payment" : status === "success" ? "Payment verified" : status === "error" ? "Try again" : `Pay ${rupees(1)} via Razorpay`;
+
+  return (
+    <article className="mt-8 grid gap-6 overflow-hidden rounded-[1.75rem] border border-[#172134]/10 bg-white p-5 sm:grid-cols-[1fr_auto] sm:items-center sm:p-7">
+      <div>
+        <div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-full text-white" style={{ backgroundColor: accent }}><ShieldCheck className="h-4 w-4" /></span><p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#172134]/50">Payment gateway test</p></div>
+        <h3 className="mt-4 text-2xl font-black uppercase leading-none tracking-[-0.06em]" style={{ fontFamily: "Anton, sans-serif" }}>Razorpay test service · {rupees(1)}</h3>
+        <p className="mt-3 max-w-xl text-sm leading-6 text-[#172134]/60">Use Razorpay test mode to confirm that checkout, order creation, and payment verification are connected. No real money is charged with test keys.</p>
+        {message && <p className={`mt-3 text-xs font-bold ${status === "success" ? "text-emerald-700" : "text-[#172134]/65"}`} role="status">{message}</p>}
+      </div>
+      <button type="button" onClick={startPayment} disabled={status === "loading" || status === "verifying"} className="inline-flex items-center justify-center gap-3 rounded-full px-5 py-3.5 text-[10px] font-black uppercase tracking-[0.15em] text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97] disabled:cursor-wait disabled:opacity-65" style={{ backgroundColor: "#172134" }}>{buttonLabel} {status === "success" ? <Check className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}</button>
+    </article>
   );
 }
 
