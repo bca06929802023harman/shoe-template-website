@@ -168,7 +168,7 @@ export default function ToonHubWebsite() {
   return (
     <div className="text-[#172134]" style={{ backgroundColor: theme.soft, color: theme.ink, fontFamily: "Inter, sans-serif", transition: "background-color 650ms cubic-bezier(0.4,0,0.2,1), color 450ms cubic-bezier(0.4,0,0.2,1)" }}>
       <section className="overflow-hidden border-y border-[#172134]/10 bg-[#172134] py-5 text-white sm:py-6">
-        <div className="toonhub-marquee flex w-max items-center gap-8 whitespace-nowrap text-[clamp(2rem,5vw,5.2rem)] font-black uppercase leading-none tracking-[-0.07em]" style={{ fontFamily: "Anton, sans-serif", color: theme.soft, transition: "color 450ms ease" }}>
+        <div className="toonhub-marquee flex w-max items-center gap-10 whitespace-nowrap text-[clamp(2rem,5vw,5.2rem)] font-black uppercase leading-none tracking-[-0.025em]" style={{ fontFamily: "Anton, sans-serif", color: theme.soft, transition: "color 450ms ease" }}>
           <span>Made for easy miles</span><span style={{ color: theme.background }}>✳</span><span>Made for easy miles</span><span style={{ color: theme.background }}>✳</span><span>Made for easy miles</span><span style={{ color: theme.background }}>✳</span><span>Made for easy miles</span><span style={{ color: theme.background }}>✳</span>
         </div>
       </section>
