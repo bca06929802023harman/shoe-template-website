@@ -187,7 +187,7 @@ export default function ToonHubWebsite() {
   return (
     <div className="text-[#172134]" style={{ backgroundColor: theme.soft, color: theme.ink, fontFamily: "Inter, sans-serif", transition: "background-color 650ms cubic-bezier(0.4,0,0.2,1), color 450ms cubic-bezier(0.4,0,0.2,1)" }}>
       <section className="overflow-hidden border-y border-[#172134]/10 bg-[#172134] py-5 text-white sm:py-6">
-        <div className="toonhub-marquee flex w-max items-center gap-10 whitespace-nowrap text-[clamp(2rem,5vw,5.2rem)] font-black uppercase leading-none tracking-[-0.025em]" style={{ fontFamily: "Anton, sans-serif", color: theme.soft, transition: "color 450ms ease" }}>
+        <div className="toonhub-marquee flex w-max items-center gap-10 whitespace-nowrap text-[clamp(2rem,5vw,5.2rem)] font-black uppercase leading-[0.92] tracking-[-0.025em]" style={{ fontFamily: "Anton, sans-serif", color: theme.soft, transition: "color 450ms ease" }}>
           <span>Made for easy miles</span><span style={{ color: theme.background }}>✳</span><span>Made for easy miles</span><span style={{ color: theme.background }}>✳</span><span>Made for easy miles</span><span style={{ color: theme.background }}>✳</span><span>Made for easy miles</span><span style={{ color: theme.background }}>✳</span>
         </div>
       </section>
@@ -197,7 +197,7 @@ export default function ToonHubWebsite() {
         <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[#172134]/50">01 / The daily drop</p>
-            <h2 className="mt-5 max-w-3xl text-[clamp(3.5rem,8vw,8.2rem)] font-black uppercase leading-[0.78] tracking-[-0.08em]" style={{ fontFamily: "Anton, sans-serif" }}>
+            <h2 className="mt-5 max-w-3xl text-[clamp(3.5rem,8vw,8.2rem)] font-black uppercase leading-[0.78] tracking-[-0.02em]" style={{ fontFamily: "Anton, sans-serif" }}>
               Pick your<br />
               <span style={{ color: theme.background, transition: "color 400ms ease" }}>pace.</span>
             </h2>
@@ -224,7 +224,7 @@ export default function ToonHubWebsite() {
                     <img src={sneaker.src} alt={sneaker.alt} className="relative z-10 w-[112%] object-contain transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[-4deg]" />
                   </div>
                   <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#172134]/50">{sneaker.category}</p>
-                  <div className="mt-2 flex items-end justify-between gap-3"><h3 className="text-xl font-black uppercase leading-none tracking-[-0.06em]">{sneaker.name}</h3><span className="text-sm font-black">{money(sneaker.price)}</span></div>
+                  <div className="mt-2 flex items-end justify-between gap-3"><h3 className="text-xl font-black uppercase leading-[0.92] tracking-[-0.06em]">{sneaker.name}</h3><span className="text-sm font-black">{money(sneaker.price)}</span></div>
                 </div>
                 <button type="button" onClick={() => addToBag(sneaker)} className="mt-5 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.15em] transition-all hover:gap-3" style={{ color: sneaker.color }}>
                   Add to bag <Plus className="h-3.5 w-3.5" />
@@ -248,7 +248,7 @@ export default function ToonHubWebsite() {
         <div className="mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[#172134]/50">02 / The easy part</p>
-            <h2 className="mt-5 text-[clamp(3.25rem,7vw,7.4rem)] font-black uppercase leading-[0.8] tracking-[-0.08em]" style={{ fontFamily: "Anton, sans-serif" }}>Everyday<br /><span style={{ color: theme.background, transition: "color 400ms ease" }}>looks good</span><br />on you.</h2>
+            <h2 className="mt-5 text-[clamp(3.25rem,7vw,7.4rem)] font-black uppercase leading-[0.9] tracking-[-0.02em]" style={{ fontFamily: "Anton, sans-serif" }}>Everyday<br /><span style={{ color: theme.background, transition: "color 400ms ease" }}>looks good</span><br />on you.</h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-3 lg:pt-16">
             <InfoCard icon={<Truck className="h-5 w-5" />} title="Free shipping" copy="On all orders over $100, always." color={theme.background} />
@@ -275,7 +275,7 @@ export default function ToonHubWebsite() {
           <div className="relative overflow-hidden rounded-[2rem] p-7 text-[#172134] sm:min-h-[500px] sm:p-10" style={{ backgroundColor: theme.soft, transition: "background-color 400ms ease" }}>
             <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full border border-[#172134]/15" /><div className="absolute -bottom-32 -left-20 h-96 w-96 rounded-full border border-[#172134]/15" />
             <p className="relative z-10 text-[10px] font-black uppercase tracking-[0.22em] text-[#172134]/50">The numbers feel good</p>
-            <div className="relative z-10 mt-28 grid gap-5 sm:grid-cols-2"><div className="rounded-3xl bg-white/70 p-5"><p className="text-5xl font-black tracking-[-0.08em]">4.8<span style={{ color: theme.background }}>/5</span></p><p className="mt-3 text-[10px] font-black uppercase tracking-[0.16em] text-[#172134]/55">Comfort rating</p></div><div className="rounded-3xl bg-[#172134] p-5 text-white"><p className="text-5xl font-black tracking-[-0.08em]">30</p><p className="mt-3 text-[10px] font-black uppercase tracking-[0.16em] text-white/50">Days to decide</p></div></div>
+            <div className="relative z-10 mt-28 grid gap-5 sm:grid-cols-2"><div className="rounded-3xl bg-white/70 p-5"><p className="text-5xl font-black tracking-[-0.02em]">4.8<span style={{ color: theme.background }}>/5</span></p><p className="mt-3 text-[10px] font-black uppercase tracking-[0.16em] text-[#172134]/55">Comfort rating</p></div><div className="rounded-3xl bg-[#172134] p-5 text-white"><p className="text-5xl font-black tracking-[-0.02em]">30</p><p className="mt-3 text-[10px] font-black uppercase tracking-[0.16em] text-white/50">Days to decide</p></div></div>
             <div className="relative z-10 mt-5 rounded-3xl border border-[#172134]/10 bg-white/45 p-5"><div className="flex items-center justify-between"><span className="text-[10px] font-black uppercase tracking-[0.16em] text-[#172134]/55">Fits real life</span><Heart className="h-4 w-4" style={{ color: theme.background }} /></div><p className="mt-4 max-w-sm text-sm font-semibold leading-6">“The pair I actually reach for when I have a full day and no idea where it ends.”</p></div>
           </div>
         </div>
@@ -284,13 +284,13 @@ export default function ToonHubWebsite() {
 
       <ToonHubParallax strength={26}>
         <section id="journal" className="mx-auto max-w-[1440px] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
-        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="text-[10px] font-black uppercase tracking-[0.28em] text-[#172134]/50">04 / Community notes</p><h2 className="mt-5 text-[clamp(3.25rem,7vw,7.2rem)] font-black uppercase leading-[0.8] tracking-[-0.08em]" style={{ fontFamily: "Anton, sans-serif" }}>Good days,<br /><span style={{ color: theme.background, transition: "color 400ms ease" }}>great shoes.</span></h2></div><div className="flex gap-1 text-[#F6B73C]">{[0, 1, 2, 3, 4].map((star) => <Star key={star} className="h-4 w-4 fill-current" />)}</div></div>
+        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="text-[10px] font-black uppercase tracking-[0.28em] text-[#172134]/50">04 / Community notes</p><h2 className="mt-5 text-[clamp(3.25rem,7vw,7.2rem)] font-black uppercase leading-[0.9] tracking-[-0.02em]" style={{ fontFamily: "Anton, sans-serif" }}>Good days,<br /><span style={{ color: theme.background, transition: "color 400ms ease" }}>great shoes.</span></h2></div><div className="flex gap-1 text-[#F6B73C]">{[0, 1, 2, 3, 4].map((star) => <Star key={star} className="h-4 w-4 fill-current" />)}</div></div>
         <div className="mt-12 grid gap-4 md:grid-cols-3"><QuoteCard quote="Finally: sneakers that are bright without being loud. They make every outfit more fun." author="Rhea M. / Brooklyn" accent={theme.background} /><QuoteCard quote="Soft on day one, somehow even better on day sixty. I wore them through an airport twice." author="Jon P. / Seattle" accent={theme.background} /><QuoteCard quote="The Sky Slip is my unofficial work-from-anywhere uniform now. Zero regrets." author="Mina L. / Austin" accent={theme.background} /></div>
         </section>
       </ToonHubParallax>
 
       <ToonHubParallax strength={18}>
-        <section className="border-t border-[#172134]/10 px-5 py-20 sm:px-8 lg:px-12" style={{ backgroundColor: theme.soft, transition: "background-color 650ms cubic-bezier(0.4,0,0.2,1)" }}><div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="text-[10px] font-black uppercase tracking-[0.28em] text-[#172134]/50">Stay in step</p><h2 className="mt-4 text-[clamp(3rem,6vw,6rem)] font-black uppercase leading-[0.82] tracking-[-0.08em]" style={{ fontFamily: "Anton, sans-serif" }}>Fresh drops.<br />No noise.</h2></div><form className="flex w-full max-w-md border-b border-[#172134]/35 pb-3" onSubmit={(event) => event.preventDefault()}><input aria-label="Email address" type="email" placeholder="Your email address" className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-[#172134]/45" /><button type="submit" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: theme.background }}>Sign up <ArrowRight className="h-4 w-4" /></button></form></div></section>
+        <section className="border-t border-[#172134]/10 px-5 py-20 sm:px-8 lg:px-12" style={{ backgroundColor: theme.soft, transition: "background-color 650ms cubic-bezier(0.4,0,0.2,1)" }}><div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="text-[10px] font-black uppercase tracking-[0.28em] text-[#172134]/50">Stay in step</p><h2 className="mt-4 text-[clamp(3rem,6vw,6rem)] font-black uppercase leading-[0.82] tracking-[-0.02em]" style={{ fontFamily: "Anton, sans-serif" }}>Fresh drops.<br />No noise.</h2></div><form className="flex w-full max-w-md border-b border-[#172134]/35 pb-3" onSubmit={(event) => event.preventDefault()}><input aria-label="Email address" type="email" placeholder="Your email address" className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-[#172134]/45" /><button type="submit" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: theme.background }}>Sign up <ArrowRight className="h-4 w-4" /></button></form></div></section>
       </ToonHubParallax>
 
       <footer className="px-5 py-8 text-white sm:px-8 lg:px-12" style={{ backgroundColor: theme.ink, transition: "background-color 650ms cubic-bezier(0.4,0,0.2,1)" }}><div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-5 text-[9px] font-black uppercase tracking-[0.16em] text-white/45 sm:flex-row"><span>© 2026 TOONHUB Casuals</span><span>Easy miles since day one</span><span>Privacy / Terms / Contact</span></div></footer>
@@ -390,7 +390,7 @@ function RazorpayTestService({ accent }: { accent: string }) {
       <article className="mt-8 grid gap-6 overflow-hidden rounded-[1.75rem] border border-[#172134]/10 bg-white p-5 sm:grid-cols-[1fr_auto] sm:items-center sm:p-7">
       <div>
         <div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-full text-white" style={{ backgroundColor: accent }}><ShieldCheck className="h-4 w-4" /></span><p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#172134]/50">Payment gateway test</p></div>
-        <h3 className="mt-4 text-2xl font-black uppercase leading-none tracking-[-0.06em]" style={{ fontFamily: "Anton, sans-serif" }}>Razorpay test service · {rupees(1)}</h3>
+        <h3 className="mt-4 text-2xl font-black uppercase leading-[0.92] tracking-[-0.06em]" style={{ fontFamily: "Anton, sans-serif" }}>Razorpay test service · {rupees(1)}</h3>
         <p className="mt-3 max-w-xl text-sm leading-6 text-[#172134]/60">Use Razorpay test mode to confirm that checkout, order creation, and payment verification are connected. No real money is charged with test keys.</p>
         {message && <p className={`mt-3 text-xs font-bold ${status === "success" ? "text-emerald-700" : "text-[#172134]/65"}`} role="status">{message}</p>}
       </div>
@@ -406,11 +406,11 @@ function RazorpayReceiptModal({ receipt, accent, onClose }: { receipt: RazorpayR
     <div className="fixed inset-0 z-[110] flex items-center justify-center bg-[#172134]/45 p-5 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="razorpay-receipt-title">
       <div className="w-full max-w-md overflow-hidden rounded-[2rem] bg-white text-[#172134] shadow-2xl">
         <div className="flex items-start justify-between p-6 sm:p-8" style={{ backgroundColor: `${accent}22` }}>
-          <div><span className="flex h-11 w-11 items-center justify-center rounded-full text-white" style={{ backgroundColor: accent }}><Check className="h-5 w-5" /></span><p className="mt-6 text-[10px] font-black uppercase tracking-[0.2em] text-[#172134]/50">Transaction successful</p><h2 id="razorpay-receipt-title" className="mt-2 text-4xl font-black uppercase leading-none tracking-[-0.07em]" style={{ fontFamily: "Anton, sans-serif" }}>Payment verified.</h2></div>
+          <div><span className="flex h-11 w-11 items-center justify-center rounded-full text-white" style={{ backgroundColor: accent }}><Check className="h-5 w-5" /></span><p className="mt-6 text-[10px] font-black uppercase tracking-[0.2em] text-[#172134]/50">Transaction successful</p><h2 id="razorpay-receipt-title" className="mt-2 text-4xl font-black uppercase leading-[0.92] tracking-[-0.015em]" style={{ fontFamily: "Anton, sans-serif" }}>Payment verified.</h2></div>
           <button type="button" onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full border border-[#172134]/15 transition-colors hover:bg-white/70" aria-label="Close receipt"><X className="h-4 w-4" /></button>
         </div>
         <div className="space-y-4 p-6 sm:p-8">
-          <div className="flex items-center justify-between rounded-2xl bg-[#172134] p-4 text-white"><span className="text-[10px] font-black uppercase tracking-[0.16em] text-white/55">Amount paid</span><span className="text-2xl font-black tracking-[-0.05em]">{rupees(receipt.amount / 100)}</span></div>
+          <div className="flex items-center justify-between rounded-2xl bg-[#172134] p-4 text-white"><span className="text-[10px] font-black uppercase tracking-[0.16em] text-white/55">Amount paid</span><span className="text-2xl font-black tracking-[-0.01em]">{rupees(receipt.amount / 100)}</span></div>
           <ReceiptRow label="Status" value={receipt.status === "captured" ? "Captured" : receipt.status} valueClassName="text-emerald-700" />
           <ReceiptRow label="Payment ID" value={receipt.paymentId} />
           <ReceiptRow label="Order ID" value={receipt.orderId} />
@@ -431,7 +431,7 @@ function InfoCard({ icon, title, copy, color }: { icon: React.ReactNode; title: 
 }
 
 function QuoteCard({ quote, author, accent }: { quote: string; author: string; accent: string }) {
-  return <article className="rounded-[2rem] border border-[#172134]/10 bg-white p-6 transition-transform duration-300 hover:-translate-y-2 sm:p-8"><span className="block h-1.5 w-14 rounded-full" style={{ backgroundColor: accent }} /><p className="mt-10 text-xl font-black leading-[1.05] tracking-[-0.05em]">“{quote}”</p><p className="mt-8 text-[10px] font-black uppercase tracking-[0.16em] text-[#172134]/50">{author}</p></article>;
+  return <article className="rounded-[2rem] border border-[#172134]/10 bg-white p-6 transition-transform duration-300 hover:-translate-y-2 sm:p-8"><span className="block h-1.5 w-14 rounded-full" style={{ backgroundColor: accent }} /><p className="mt-10 text-xl font-black leading-[1.05] tracking-[-0.01em]">“{quote}”</p><p className="mt-8 text-[10px] font-black uppercase tracking-[0.16em] text-[#172134]/50">{author}</p></article>;
 }
 
 
@@ -460,7 +460,7 @@ function ToonHubCartDrawer({
       <button type="button" aria-label="Close cart" onClick={onClose} className={`absolute inset-0 bg-[#172134]/35 backdrop-blur-sm transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"}`} />
       <aside className={`absolute right-0 top-0 flex h-full w-full max-w-md flex-col overflow-y-auto p-6 shadow-2xl transition-transform duration-500 sm:p-8 ${open ? "translate-x-0" : "translate-x-full"}`} style={{ backgroundColor: theme.soft, color: theme.ink, transitionProperty: "transform, background-color, color", transitionDuration: "500ms, 650ms, 450ms" }}>
         <div className="flex items-start justify-between">
-          <div><p className="text-[10px] font-black uppercase tracking-[0.22em] opacity-55">{checkout ? "Secure checkout" : "Your bag"}</p><h2 className="mt-2 text-3xl font-black uppercase leading-none tracking-[-0.07em]" style={{ fontFamily: "Anton, sans-serif" }}>{checkout ? "Almost there." : items.length ? `${items.length} ${items.length === 1 ? "pair" : "pairs"}` : "Nothing yet."}</h2></div>
+          <div><p className="text-[10px] font-black uppercase tracking-[0.22em] opacity-55">{checkout ? "Secure checkout" : "Your bag"}</p><h2 className="mt-2 text-3xl font-black uppercase leading-[0.92] tracking-[-0.015em]" style={{ fontFamily: "Anton, sans-serif" }}>{checkout ? "Almost there." : items.length ? `${items.length} ${items.length === 1 ? "pair" : "pairs"}` : "Nothing yet."}</h2></div>
           <button type="button" onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full border border-current/20 transition-colors hover:bg-white/30" aria-label="Close cart"><X className="h-4 w-4" /></button>
         </div>
 

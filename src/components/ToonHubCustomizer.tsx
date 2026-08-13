@@ -59,7 +59,7 @@ export default function ToonHubCustomizer({ onAddToBag }: ToonHubCustomizerProps
       <div className="mx-auto grid max-w-[1440px] items-center gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
         <div>
           <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[#172134]/50">02 / Make it yours</p>
-          <h2 className="mt-5 text-[clamp(3.4rem,7vw,7.5rem)] font-black uppercase leading-[0.8] tracking-[-0.08em]" style={{ fontFamily: "Anton, sans-serif" }}>Color your<br /><span style={{ color: theme.background, transition: "color 400ms ease" }}>own route.</span></h2>
+          <h2 className="mt-5 text-[clamp(3.4rem,7vw,7.5rem)] font-black uppercase leading-[0.9] tracking-[-0.02em]" style={{ fontFamily: "Anton, sans-serif" }}>Color your<br /><span style={{ color: theme.background, transition: "color 400ms ease" }}>own route.</span></h2>
           <p className="mt-7 max-w-md text-sm leading-7 text-[#172134]/65">Start from the active hero color, then tune the lace and sole colors on a sneaker model with a layered upper, toe box, collar, eyelets, laces, side stripe, and tread.</p>
 
           <div className="mt-9 space-y-7">
