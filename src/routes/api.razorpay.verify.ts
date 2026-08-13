@@ -106,6 +106,8 @@ export const Route = createFileRoute("/api/razorpay/verify")({
           verified: true,
           paymentId: razorpayPaymentId,
           orderId,
+          amount: payment.amount,
+          currency: payment.currency,
           status: payment.status,
         });
       },

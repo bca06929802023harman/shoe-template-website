@@ -39,3 +39,11 @@ cp .env.example .env
 ```
 
 Set `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` as server environment variables in the deployed environment. Do not put the secret in client-side variables or commit a real `.env` file. Use Razorpay Test Mode to avoid charging real money while checking the flow.
+
+### Webhook setup
+
+Set `RAZORPAY_WEBHOOK_SECRET` to the secret configured for the Razorpay webhook in the Dashboard. Point the Test Mode webhook URL to `/api/razorpay/webhook` and subscribe to `payment.captured` and `payment.failed`. The endpoint validates `X-Razorpay-Signature` against the raw request body, recognizes duplicate event IDs, and logs the payment details needed for follow-up processing.
+
+After the browser-side payment signature and payment details are verified, the storefront opens a receipt modal showing the amount, payment ID, order ID, status, and verification time.
+
+For this payment-gateway test, webhook handling acknowledges and logs the event details without creating an order database. The in-process event-ID cache prevents immediate duplicate processing; production fulfillment should persist webhook IDs and payment status in durable storage before performing business actions.

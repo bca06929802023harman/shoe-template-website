@@ -102,6 +102,25 @@ type RazorpayOrder = {
   currency: string;
 };
 
+type RazorpayReceipt = {
+  paymentId: string;
+  orderId: string;
+  amount: number;
+  currency: string;
+  status: string;
+  verifiedAt: string;
+};
+
+type RazorpayVerificationResponse = {
+  verified?: boolean;
+  error?: string;
+  paymentId?: string;
+  orderId?: string;
+  amount?: number;
+  currency?: string;
+  status?: string;
+};
+
 type RazorpayCheckoutOptions = {
   key: string;
   amount: number;
@@ -286,6 +305,7 @@ export default function ToonHubWebsite() {
 function RazorpayTestService({ accent }: { accent: string }) {
   const [status, setStatus] = useState<"idle" | "loading" | "verifying" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [receipt, setReceipt] = useState<RazorpayReceipt | null>(null);
 
   const startPayment = async () => {
     if (status === "loading" || status === "verifying") return;
@@ -321,13 +341,21 @@ function RazorpayTestService({ accent }: { accent: string }) {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ ...payment, orderId: orderPayload.orderId }),
             });
-            const verificationPayload = (await verificationResponse.json()) as { error?: string; verified?: boolean };
+            const verificationPayload = (await verificationResponse.json()) as RazorpayVerificationResponse;
 
-            if (!verificationResponse.ok || !verificationPayload.verified) {
+            if (!verificationResponse.ok || !verificationPayload.verified || !verificationPayload.paymentId || !verificationPayload.orderId) {
               throw new Error(verificationPayload.error ?? "Payment verification failed.");
             }
 
             setStatus("success");
+            setReceipt({
+              paymentId: verificationPayload.paymentId,
+              orderId: verificationPayload.orderId,
+              amount: verificationPayload.amount ?? orderPayload.amount,
+              currency: verificationPayload.currency ?? orderPayload.currency,
+              status: verificationPayload.status ?? "captured",
+              verifiedAt: new Date().toISOString(),
+            });
             setMessage("The ₹1 payment was verified successfully.");
           } catch (error) {
             setStatus("error");
@@ -348,19 +376,54 @@ function RazorpayTestService({ accent }: { accent: string }) {
     }
   };
 
-  const buttonLabel = status === "loading" ? "Preparing checkout" : status === "verifying" ? "Verifying payment" : status === "success" ? "Payment verified" : status === "error" ? "Try again" : `Pay ${rupees(1)} via Razorpay`;
+  const buttonLabel = status === "loading" ? "Preparing checkout" : status === "verifying" ? "Verifying payment" : status === "success" ? "View receipt" : status === "error" ? "Try again" : `Pay ${rupees(1)} via Razorpay`;
+  const handleAction = () => {
+    if (status === "success" && receipt) {
+      setReceipt(receipt);
+      return;
+    }
+    void startPayment();
+  };
 
   return (
-    <article className="mt-8 grid gap-6 overflow-hidden rounded-[1.75rem] border border-[#172134]/10 bg-white p-5 sm:grid-cols-[1fr_auto] sm:items-center sm:p-7">
+    <>
+      <article className="mt-8 grid gap-6 overflow-hidden rounded-[1.75rem] border border-[#172134]/10 bg-white p-5 sm:grid-cols-[1fr_auto] sm:items-center sm:p-7">
       <div>
         <div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-full text-white" style={{ backgroundColor: accent }}><ShieldCheck className="h-4 w-4" /></span><p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#172134]/50">Payment gateway test</p></div>
         <h3 className="mt-4 text-2xl font-black uppercase leading-none tracking-[-0.06em]" style={{ fontFamily: "Anton, sans-serif" }}>Razorpay test service · {rupees(1)}</h3>
         <p className="mt-3 max-w-xl text-sm leading-6 text-[#172134]/60">Use Razorpay test mode to confirm that checkout, order creation, and payment verification are connected. No real money is charged with test keys.</p>
         {message && <p className={`mt-3 text-xs font-bold ${status === "success" ? "text-emerald-700" : "text-[#172134]/65"}`} role="status">{message}</p>}
       </div>
-      <button type="button" onClick={startPayment} disabled={status === "loading" || status === "verifying"} className="inline-flex items-center justify-center gap-3 rounded-full px-5 py-3.5 text-[10px] font-black uppercase tracking-[0.15em] text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97] disabled:cursor-wait disabled:opacity-65" style={{ backgroundColor: "#172134" }}>{buttonLabel} {status === "success" ? <Check className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}</button>
-    </article>
+        <button type="button" onClick={handleAction} disabled={status === "loading" || status === "verifying"} className="inline-flex items-center justify-center gap-3 rounded-full px-5 py-3.5 text-[10px] font-black uppercase tracking-[0.15em] text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97] disabled:cursor-wait disabled:opacity-65" style={{ backgroundColor: "#172134" }}>{buttonLabel} {status === "success" ? <Check className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}</button>
+      </article>
+      {receipt && <RazorpayReceiptModal receipt={receipt} accent={accent} onClose={() => { setReceipt(null); setStatus("idle"); setMessage(""); }} />}
+    </>
   );
+}
+
+function RazorpayReceiptModal({ receipt, accent, onClose }: { receipt: RazorpayReceipt; accent: string; onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-[#172134]/45 p-5 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="razorpay-receipt-title">
+      <div className="w-full max-w-md overflow-hidden rounded-[2rem] bg-white text-[#172134] shadow-2xl">
+        <div className="flex items-start justify-between p-6 sm:p-8" style={{ backgroundColor: `${accent}22` }}>
+          <div><span className="flex h-11 w-11 items-center justify-center rounded-full text-white" style={{ backgroundColor: accent }}><Check className="h-5 w-5" /></span><p className="mt-6 text-[10px] font-black uppercase tracking-[0.2em] text-[#172134]/50">Transaction successful</p><h2 id="razorpay-receipt-title" className="mt-2 text-4xl font-black uppercase leading-none tracking-[-0.07em]" style={{ fontFamily: "Anton, sans-serif" }}>Payment verified.</h2></div>
+          <button type="button" onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full border border-[#172134]/15 transition-colors hover:bg-white/70" aria-label="Close receipt"><X className="h-4 w-4" /></button>
+        </div>
+        <div className="space-y-4 p-6 sm:p-8">
+          <div className="flex items-center justify-between rounded-2xl bg-[#172134] p-4 text-white"><span className="text-[10px] font-black uppercase tracking-[0.16em] text-white/55">Amount paid</span><span className="text-2xl font-black tracking-[-0.05em]">{rupees(receipt.amount / 100)}</span></div>
+          <ReceiptRow label="Status" value={receipt.status === "captured" ? "Captured" : receipt.status} valueClassName="text-emerald-700" />
+          <ReceiptRow label="Payment ID" value={receipt.paymentId} />
+          <ReceiptRow label="Order ID" value={receipt.orderId} />
+          <ReceiptRow label="Verified" value={new Date(receipt.verifiedAt).toLocaleString()} />
+          <button type="button" onClick={onClose} className="mt-3 flex w-full items-center justify-center gap-3 rounded-full bg-[#172134] px-5 py-4 text-[10px] font-black uppercase tracking-[0.18em] text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]">Done <ArrowRight className="h-4 w-4" /></button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ReceiptRow({ label, value, valueClassName = "" }: { label: string; value: string; valueClassName?: string }) {
+  return <div className="flex items-start justify-between gap-5 border-b border-[#172134]/10 pb-3 text-xs"><span className="font-black uppercase tracking-[0.14em] text-[#172134]/45">{label}</span><span className={`max-w-[62%] break-all text-right font-bold ${valueClassName}`}>{value}</span></div>;
 }
 
 function InfoCard({ icon, title, copy, color }: { icon: React.ReactNode; title: string; copy: string; color: string }) {
